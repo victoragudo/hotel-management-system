@@ -375,7 +375,7 @@ const file_proto_scheduler_proto_rawDesc = "" +
 	"\x15FETCH_MISSING_REVIEWS\x10\x052\xb3\x01\n" +
 	"\x10SchedulerService\x12E\n" +
 	"\fTriggerFetch\x12\x19.scheduler.TriggerRequest\x1a\x1a.scheduler.TriggerResponse\x12X\n" +
-	"\x11GetScheduleStatus\x12 .scheduler.ScheduleStatusRequest\x1a!.scheduler.ScheduleStatusResponseBIZGgithub.com/victoragudo/hotel-management-system/fetcher-service/proto/schedulerb\x06proto3"
+	"\x11GetScheduleStatus\x12 .scheduler.ScheduleStatusRequest\x1a!.scheduler.ScheduleStatusResponseBPZNgithub.com/victoragudo/hotel-management-system/fetcher-service/proto/schedulerb\x06proto3"
 
 var (
 	file_proto_scheduler_proto_rawDescOnce sync.Once

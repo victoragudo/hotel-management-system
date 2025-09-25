@@ -498,7 +498,7 @@ const file_proto_orchestrator_proto_rawDesc = "" +
 	"\x16JOB_STATUS_DEAD_LETTER\x10\x062\xb3\x01\n" +
 	"\x13OrchestratorService\x12N\n" +
 	"\x13ProcessFetchRequest\x12\x1a.orchestrator.FetchRequest\x1a\x1b.orchestrator.FetchResponse\x12L\n" +
-	"\x0fGetHealthStatus\x12\x1b.orchestrator.HealthRequest\x1a\x1c.orchestrator.HealthResponseBLZJgithub.com/victoragudo/hotel-management-system/fetcher-service/proto/orchestratorb\x06proto3"
+	"\x0fGetHealthStatus\x12\x1b.orchestrator.HealthRequest\x1a\x1c.orchestrator.HealthResponseBSZQgithub.com/victoragudo/hotel-management-system/fetcher-service/proto/orchestratorb\x06proto3"
 
 var (
 	file_proto_orchestrator_proto_rawDescOnce sync.Once
