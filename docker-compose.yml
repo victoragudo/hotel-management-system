@@ -1,0 +1,193 @@
+# Build optimization settings
+x-build-args: &build-args
+  BUILDKIT_INLINE_CACHE: 1
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:16
+    environment:
+      POSTGRES_DB: hotel-management-system_db
+      POSTGRES_USER: ${POSTGRES_USER:-hotel-management-system}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-hotel-management-systempass}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 5s
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management-alpine
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-rabbitmq}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS:-rabbitmq}
+      RABBITMQ_LOAD_DEFINITIONS: /etc/rabbitmq/definitions.json
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+      - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    networks:
+      - app-network
+  redis:
+    container_name: redis
+    image: redis:7
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD:-redispass}"]
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+  typesense:
+    container_name: typesense
+    image: typesense/typesense:30.0.rc11
+    environment:
+      TYPESENSE_DATA_DIR: /data
+      TYPESENSE_API_KEY: ${TYPESENSE_API_KEY:-typesensekey123}
+      TYPESENSE_ENABLE_CORS: ${TYPESENSE_ENABLE_CORS:-true}
+    ports:
+      - "8108:8108"
+    volumes:
+      - typesense_data:/data
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8108/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - app-network
+  orchestrator:
+    container_name: fetcher-orchestrator
+    build:
+      context: .
+      dockerfile: fetcher-service/cmd/orchestrator/Dockerfile
+      args:
+        <<: *build-args
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: ${POSTGRES_USER:-fetcher}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-fetcherpass}
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_USER: ${RABBITMQ_USER:-rabbitmq}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-rabbitmq}
+    volumes:
+      - ./config.yaml:/config.yaml
+    ports:
+      - "50051:50051"
+    networks:
+      - app-network
+  worker:
+    build:
+      context: .
+      dockerfile: fetcher-service/cmd/worker/Dockerfile
+      args:
+        <<: *build-args
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: ${POSTGRES_USER:-fetcher}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-fetcherpass}
+      RABBITMQ_USER: ${RABBITMQ_USER:-rabbitmq}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-rabbitmq}
+      RABBITMQ_HOST: rabbitmq
+      REDIS_HOST: redis
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-redispass}
+      CUPID_API_KEY: ${CUPID_API_KEY}
+    volumes:
+      - ./config.yaml:/config.yaml
+    networks:
+      - app-network
+  scheduler:
+    depends_on:
+      orchestrator:
+        condition: service_started
+    container_name: fetcher-scheduler
+    build:
+      context: .
+      dockerfile: fetcher-service/cmd/scheduler/Dockerfile
+      args:
+        <<: *build-args
+    environment:
+      SCHEDULER_ORCHESTRATOR_GRPC_HOST: fetcher-orchestrator
+      SCHEDULER_ORCHESTRATOR_GRPC_PORT: 50051
+    volumes:
+      - ./config.yaml:/config.yaml
+    networks:
+      - app-network
+  search-service:
+    container_name: search-service
+    build:
+      context: .
+      dockerfile: search-service/cmd/api/Dockerfile
+      args:
+        <<: *build-args
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      typesense:
+        condition: service_started
+    volumes:
+      - ./config.yaml:/config.yaml
+    environment:
+      TYPESENSE_HOST: http://typesense:8108
+      TYPESENSE_API_KEY: ${TYPESENSE_API_KEY}
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: ${POSTGRES_USER:-fetcher}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-fetcherpass}
+      REDIS_HOST: redis
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-redispass}
+      CUPID_API_KEY: ${CUPID_API_KEY}
+      CUPID_API_BASE_URL: ${CUPID_API_BASE_URL:-https://api.cupid.com/v1}
+      SERVER_PORT: 8080
+      LOG_LEVEL: info
+      SYNC_INITIAL_ON_START: "false"
+      SYNC_INCREMENTAL_INTERVAL: 5m
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+  rabbitmq_data:
+    driver: local
+  redis_data:
+    driver: local
+  typesense_data:
+    driver: local
+  go_mod_cache:
+    driver: local
+  go_build_cache:
+    driver: local

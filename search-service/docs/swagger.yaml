@@ -1,0 +1,359 @@
+basePath: /
+definitions:
+  github_com_victoragudo_hotel-management-system_search-service_internal_application_usecase.SyncOptions:
+    properties:
+      batchSize:
+        type: integer
+      clearIndexFirst:
+        type: boolean
+      fullSync:
+        type: boolean
+      sinceTimestamp:
+        type: string
+      updateCacheAfter:
+        type: boolean
+    type: object
+  github_com_victoragudo_hotel-management-system_search-service_internal_domain_search.Suggestion:
+    properties:
+      hotel_id:
+        type: integer
+      metadata:
+        additionalProperties: true
+        type: object
+      score:
+        type: number
+      text:
+        type: string
+      type:
+        type: string
+    type: object
+  internal_infrastructure_handler.APIResponse:
+    properties:
+      data: { }
+      error:
+        type: string
+      meta: { }
+      success:
+        type: boolean
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: API for hotel search and management services
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Nuitee - Hotel Management & Search Service API
+  version: "1.0"
+paths:
+  /api/v1/admin/sync:
+    post:
+      consumes:
+        - application/json
+      description: Manually trigger synchronization of hotel data from external sources
+      parameters:
+        - description: Synchronization options
+          in: body
+          name: options
+          schema:
+            $ref: '#/definitions/github_com_victoragudo_hotel-management-system_search-service_internal_application_usecase.SyncOptions'
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Synchronization result with statistics
+          schema:
+            $ref: '#/definitions/internal_infrastructure_handler.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_infrastructure_handler.APIResponse'
+      summary: Trigger manual sync
+      tags:
+        - admin
+  /api/v1/admin/sync/stats:
+    get:
+      consumes:
+        - application/json
+      description: Get current statistics about hotel data synchronization including
+        index size, document count, and last update time
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Synchronization statistics
+          schema:
+            $ref: '#/definitions/internal_infrastructure_handler.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_infrastructure_handler.APIResponse'
+      summary: Get sync statistics
+      tags:
+        - admin
+  /api/v1/hotels/{id}:
+    get:
+      consumes:
+        - application/json
+      description: Get detailed information about a specific hotel by its ID with
+        optional reviews limit
+      parameters:
+        - description: Hotel ID
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: Limit the number of reviews to return
+          in: query
+          minimum: 1
+          name: reviewsLimit
+          type: integer
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Hotel details
+          schema:
+            $ref: '#/definitions/internal_infrastructure_handler.APIResponse'
+        "400":
+          description: Bad Request - Invalid parameters
+          schema:
+            $ref: '#/definitions/internal_infrastructure_handler.APIResponse'
+        "404":
+          description: Not Found - Hotel not found
+          schema:
+            $ref: '#/definitions/internal_infrastructure_handler.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_infrastructure_handler.APIResponse'
+      summary: Get hotel by ID
+      tags:
+        - hotels
+  /api/v1/search/facets:
+    get:
+      consumes:
+        - application/json
+      description: Get available facets for filtering hotel search results (cities,
+        countries, star ratings, amenities, etc.)
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Available search facets with counts
+          schema:
+            $ref: '#/definitions/internal_infrastructure_handler.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_infrastructure_handler.APIResponse'
+      summary: Get search facets
+      tags:
+        - search
+  /api/v1/search/hotels:
+    get:
+      consumes:
+        - application/json
+      description: Search for hotels using various filters like query, location, rating,
+        price range, amenities, etc.
+      parameters:
+        - description: Search query (hotel name, description, etc.)
+          in: query
+          name: q
+          type: string
+        - description: City filter
+          in: query
+          name: city
+          type: string
+        - description: Country filter
+          in: query
+          name: country
+          type: string
+        - description: Minimum rating (0-5)
+          in: query
+          name: rating_min
+          type: number
+        - description: Maximum rating (0-5)
+          in: query
+          name: rating_max
+          type: number
+        - description: Star rating filter (1-5)
+          in: query
+          name: star_rating
+          type: integer
+        - collectionFormat: csv
+          description: Amenities filter (comma-separated)
+          in: query
+          items:
+            type: string
+          name: amenities
+          type: array
+        - collectionFormat: csv
+          description: Tags filter (comma-separated)
+          in: query
+          items:
+            type: string
+          name: tags
+          type: array
+        - description: Minimum price
+          in: query
+          name: price_min
+          type: number
+        - description: Maximum price
+          in: query
+          name: price_max
+          type: number
+        - description: Currency code (e.g., USD, EUR)
+          in: query
+          name: currency
+          type: string
+        - description: 'Sort field: rating, price, distance, relevance, name, created_at'
+          enum:
+            - rating
+            - price
+            - distance
+            - relevance
+            - name
+            - created_at
+          in: query
+          name: sort_by
+          type: string
+        - description: 'Sort order: asc, desc'
+          enum:
+            - asc
+            - desc
+          in: query
+          name: sort_order
+          type: string
+        - description: 'Page number (default: 1)'
+          in: query
+          name: page
+          type: integer
+        - description: 'Items per page (default: 20, max: 100)'
+          in: query
+          name: limit
+          type: integer
+        - description: Latitude for location-based search
+          in: query
+          name: latitude
+          type: number
+        - description: Longitude for location-based search
+          in: query
+          name: longitude
+          type: number
+        - description: Search radius in kilometers
+          in: query
+          name: radius
+          type: number
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Search results with pagination metadata
+          schema:
+            $ref: '#/definitions/internal_infrastructure_handler.APIResponse'
+        "400":
+          description: Bad Request - Invalid parameters
+          schema:
+            $ref: '#/definitions/internal_infrastructure_handler.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_infrastructure_handler.APIResponse'
+      summary: Search hotels
+      tags:
+        - search
+  /api/v1/search/suggestions:
+    get:
+      consumes:
+        - application/json
+      description: Get autocomplete suggestions for hotel search based on partial
+        query input
+      parameters:
+        - description: Search query for suggestions
+          in: query
+          name: q
+          required: true
+          type: string
+        - description: 'Maximum number of suggestions to return (default: 10)'
+          in: query
+          name: limit
+          type: integer
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: List of search suggestions
+          schema:
+            $ref: '#/definitions/internal_infrastructure_handler.APIResponse'
+        "400":
+          description: Bad Request - Query parameter is required
+          schema:
+            $ref: '#/definitions/internal_infrastructure_handler.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_infrastructure_handler.APIResponse'
+      summary: Get hotel search suggestions
+      tags:
+        - search
+  /api/v1/search/trending:
+    get:
+      consumes:
+        - application/json
+      description: Get currently trending hotel search suggestions based on popular
+        searches
+      parameters:
+        - description: 'Maximum number of trending suggestions to return (default: 10)'
+          in: query
+          name: limit
+          type: integer
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: List of trending search suggestions
+          schema:
+            allOf:
+              - $ref: '#/definitions/internal_infrastructure_handler.APIResponse'
+              - properties:
+                  data:
+                    items:
+                      $ref: '#/definitions/github_com_victoragudo_hotel-management-system_search-service_internal_domain_search.Suggestion'
+                    type: array
+                type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_infrastructure_handler.APIResponse'
+      summary: Get trending search suggestions
+      tags:
+        - search
+  /health:
+    get:
+      consumes:
+        - application/json
+      description: Get the current health status of the search service
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Service health status with timestamp and version
+          schema:
+            allOf:
+              - $ref: '#/definitions/internal_infrastructure_handler.APIResponse'
+              - properties:
+                  data:
+                    type: object
+                type: object
+      summary: Health check
+      tags:
+        - health
+schemes:
+  - http
+  - https
+swagger: "2.0"

@@ -1,0 +1,399 @@
+### Hotel API Test Requests
+
+GET http://localhost:8080/api/v1/hotels/1641879
+
+###
+
+GET http://localhost:8080/api/v1/hotels/317597
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1202743
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1037179
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1154868
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1270324
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1305326
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1617655
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1975211
+
+###
+
+GET http://localhost:8080/api/v1/hotels/2017823
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1503950
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1033299
+
+###
+
+GET http://localhost:8080/api/v1/hotels/378772
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1563003
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1085875
+
+###
+
+GET http://localhost:8080/api/v1/hotels/828917
+
+###
+
+GET http://localhost:8080/api/v1/hotels/830417
+
+###
+
+GET http://localhost:8080/api/v1/hotels/838887
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1702062
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1144294
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1738870
+
+###
+
+GET http://localhost:8080/api/v1/hotels/898052
+
+###
+
+GET http://localhost:8080/api/v1/hotels/906450
+
+###
+
+GET http://localhost:8080/api/v1/hotels/906467
+
+###
+
+GET http://localhost:8080/api/v1/hotels/2241195
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1244595
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1277032
+
+###
+
+GET http://localhost:8080/api/v1/hotels/956026
+
+###
+
+GET http://localhost:8080/api/v1/hotels/957111
+
+###
+
+GET http://localhost:8080/api/v1/hotels/152896
+
+###
+
+GET http://localhost:8080/api/v1/hotels/896868
+
+###
+
+GET http://localhost:8080/api/v1/hotels/982911
+
+###
+
+GET http://localhost:8080/api/v1/hotels/986491
+
+###
+
+GET http://localhost:8080/api/v1/hotels/986622
+
+###
+
+GET http://localhost:8080/api/v1/hotels/988544
+
+###
+
+GET http://localhost:8080/api/v1/hotels/989315
+
+###
+
+GET http://localhost:8080/api/v1/hotels/989544
+
+###
+
+GET http://localhost:8080/api/v1/hotels/990223
+
+###
+
+GET http://localhost:8080/api/v1/hotels/990341
+
+###
+
+GET http://localhost:8080/api/v1/hotels/990370
+
+###
+
+GET http://localhost:8080/api/v1/hotels/990490
+
+###
+
+GET http://localhost:8080/api/v1/hotels/990609
+
+###
+
+GET http://localhost:8080/api/v1/hotels/990629
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1259611
+
+###
+
+GET http://localhost:8080/api/v1/hotels/991819
+
+###
+
+GET http://localhost:8080/api/v1/hotels/992027
+
+###
+
+GET http://localhost:8080/api/v1/hotels/992851
+
+###
+
+GET http://localhost:8080/api/v1/hotels/993851
+
+###
+
+GET http://localhost:8080/api/v1/hotels/994085
+
+###
+
+GET http://localhost:8080/api/v1/hotels/994333
+
+###
+
+GET http://localhost:8080/api/v1/hotels/994495
+
+###
+
+GET http://localhost:8080/api/v1/hotels/994903
+
+###
+
+GET http://localhost:8080/api/v1/hotels/995227
+
+###
+
+GET http://localhost:8080/api/v1/hotels/995787
+
+###
+
+GET http://localhost:8080/api/v1/hotels/996977
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1186578
+
+###
+
+GET http://localhost:8080/api/v1/hotels/999444
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1000017
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1000051
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1198750
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1001100
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1001296
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1001402
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1002200
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1003142
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1004288
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1006404
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1006602
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1006810
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1006887
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1007101
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1007269
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1007466
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1011203
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1011644
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1011945
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1012047
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1012140
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1012944
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1023527
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1013529
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1013584
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1014383
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1015094
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1016591
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1016611
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1017019
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1017039
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1017044
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1018030
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1018130
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1018251
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1018402
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1018946
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1019473
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1020332
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1020335
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1020386
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1021856
+
+###
+
+GET http://localhost:8080/api/v1/hotels/1022380

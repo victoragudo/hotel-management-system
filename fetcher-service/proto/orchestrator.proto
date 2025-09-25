@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package orchestrator;
+
+option go_package = "github.com/victoragudo/hotel-management-system/fetcher-service/proto/orchestrator";
+
+service OrchestratorService {
+  rpc ProcessFetchRequest(FetchRequest) returns (FetchResponse);
+  rpc GetHealthStatus(HealthRequest) returns (HealthResponse);
+}
+
+message FetchRequest {
+  string request_id = 1;
+  MessageType message_type = 2;
+  int64 timestamp = 3;
+  bool force = 4;
+}
+
+message FetchResponse {
+  bool success = 1;
+  string message = 2;
+  string request_id = 3;
+  int32 jobs_created = 4;
+  repeated JobInfo jobs = 5;
+}
+
+message HealthRequest {}
+
+message HealthResponse {
+  bool healthy = 1;
+  string status = 2;
+  map<string, string> components = 3;
+  int64 timestamp = 4;
+}
+
+message JobInfo {
+  int32 hotel_id = 1;
+  MessageType message_type = 2;
+  JobStatus status = 3;
+}
+
+enum MessageType {
+  UNSPECIFIED = 0;
+  UPDATE_HOTEL = 1;
+  UPDATE_REVIEW = 2;
+  UPDATE_TRANSLATION = 3;
+  FETCH_MISSING_TRANSLATIONS = 4;
+  FETCH_MISSING_REVIEWS = 5;
+}
+
+enum JobStatus {
+  JOB_STATUS_UNSPECIFIED = 0;
+  JOB_STATUS_PENDING = 1;
+  JOB_STATUS_PROCESSING = 2;
+  JOB_STATUS_COMPLETED = 3;
+  JOB_STATUS_FAILED = 4;
+  JOB_STATUS_RETRYING = 5;
+  JOB_STATUS_DEAD_LETTER = 6;
+}

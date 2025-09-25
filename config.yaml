@@ -1,0 +1,134 @@
+environment: development
+
+scheduler:
+  intervals_in_minutes:
+    update_hotels: 5
+    update_reviews: 10
+    update_translations: 15
+    fetch_missing_reviews: 5
+    fetch_missing_translations: 5
+  orchestrator_grpc_port: 50051
+  orchestrator_grpc_host: "localhost"
+
+orchestrator:
+  postgres_host: "${POSTGRES_HOST}"
+  postgres_port: 5432
+  postgres_db: "hotel-management-system_db"
+  postgres_user: "${POSTGRES_USER}"
+  postgres_password: "${POSTGRES_PASSWORD}"
+  rabbitmq_host: "${RABBITMQ_HOST}"
+  rabbitmq_user: "${RABBITMQ_USER}"
+  rabbitmq_password: "${RABBITMQ_PASSWORD}"
+  rabbitmq_port: 5672
+  main_queue: "hotel_jobs"
+  max_retry_attempts: 5
+  batch_size: 5
+  batch_delay_ms: 100
+  server_host: ""
+  server_port: 50051
+
+worker:
+  postgres_host: "${POSTGRES_HOST}"
+  postgres_port: 5432
+  postgres_db: "hotel-management-system_db"
+  postgres_user: "${POSTGRES_USER}"
+  postgres_password: "${POSTGRES_PASSWORD}"
+  rabbitmq_host: "${RABBITMQ_HOST}"
+  rabbitmq_user: "${RABBITMQ_USER}"
+  rabbitmq_password: "${RABBITMQ_PASSWORD}"
+  rabbitmq_port: 5672
+  main_queue: "hotel_jobs"
+  max_retry_attempts: 5
+  redis_host: "${REDIS_HOST}"
+  redis_port: 6379
+  redis_password: "${REDIS_PASSWORD}"
+  prefetch_count: 1
+  
+  # TTL configurations organized by entity type in a real-world application
+  #ttl:
+  #  hotels:
+  #    lock_seconds: 180        # Redis lock TTL (3 minutes)
+  #    cache_seconds: 1350      # Redis cache TTL (22.5 minutes)
+  #    next_update_seconds: 1350 # Schedule next update (22.5 minutes)
+  #  reviews:
+  #    lock_seconds: 120        # Redis lock TTL (2 minutes)
+  #    cache_seconds: 10800     # Redis cache TTL (3 hours)
+  #    next_update_seconds: 10800 # Schedule next update (3 hours)
+  #  translations:
+  #    lock_seconds: 300        # Redis lock TTL (5 minutes)
+  #    cache_seconds: 86400     # Redis cache TTL (24 horas)
+  #    next_update_seconds: 86400 # Schedule next update (24 horas)
+
+  # Debug values
+  ttl:
+    hotels:
+      lock_seconds: 30         # 30 segundos (¡Corto para ver locks frecuentes!)
+      cache_seconds: 240        # 1 minuto (Cache breve para ver misses)
+      next_update_seconds: 120 # 2 minutos (Updates frecuentes para testing)
+    reviews:
+      lock_seconds: 20         # 20 segundos
+      cache_seconds: 120       # 2 minutos
+      next_update_seconds: 180 # 3 minutos
+    translations:
+      lock_seconds: 40         # 40 segundos
+      cache_seconds: 180       # 3 minutos
+      next_update_seconds: 300 # 5 minutos
+
+
+  cupid_api_url: "https://content-api.cupid.travel/v3.0"
+  cupid_api_key: "${CUPID_API_KEY}"
+  cupid_max_retry_attempts: 3
+  api_timeout_seconds: 30
+  circuit_breaker_max_failures: 5
+  circuit_breaker_reset_seconds: 60
+
+search:
+  server:
+    host: "${SERVER_HOST:-0.0.0.0}"
+    port: 8080
+    read_timeout: "30s"
+    write_timeout: "30s"
+    idle_timeout: "120s"
+    enable_cors: true
+    trusted_proxies: [ ]
+  database:
+    host: "${POSTGRES_HOST}"
+    port: 5432
+    username: "${POSTGRES_USER}"
+    password: "${POSTGRES_PASSWORD}"
+    database: "hotel-management-system_db"
+    ssl_mode: "${DB_SSL_MODE:-disable}"
+    max_open_connections: 25
+    max_idle_connections: 5
+    conn_max_life: "1h"
+    timeout: "30s"
+  redis:
+    host: "${REDIS_HOST}"
+    port: 6379
+    password: "${REDIS_PASSWORD}"
+    database: 0
+    pool_size: 10
+    dial_timeout: "5s"
+    read_timeout: "3s"
+    write_timeout: "3s"
+    idle_timeout: "5m"
+  #  meilisearch:
+  #    host: "${MEILISEARCH_HOST}"
+  #    api_key: masterKey123
+  #    index: "${MEILISEARCH_INDEX}"
+  #    timeout: "30s"
+  #    batch_size: 100
+  typesense:
+    host: ${TYPESENSE_HOST}
+    api_key: ${TYPESENSE_API_KEY}
+    collection_name: hotels
+  cupid_api:
+    base_url: "${CUPID_API_BASE_URL}"
+    api_key: "${CUPID_API_KEY}"
+    timeout: "30s"
+  sync:
+    batch_size: 100
+    initial_sync_on_start: true
+    incremental_interval: "1m"
+    full_sync_interval: "24h"
+    concurrent_workers: 3

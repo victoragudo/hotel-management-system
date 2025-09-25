@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package scheduler;
+
+option go_package = "github.com/victoragudo/hotel-management-system/fetcher-service/proto/scheduler";
+
+service SchedulerService {
+  rpc TriggerFetch(TriggerRequest) returns (TriggerResponse);
+  rpc GetScheduleStatus(ScheduleStatusRequest) returns (ScheduleStatusResponse);
+}
+
+message TriggerRequest {
+  string request_id = 1;
+  int64 timestamp = 2;
+  bool force = 3;
+  MessageType message_type = 4;
+}
+
+message TriggerResponse {
+  bool success = 1;
+  string message = 2;
+  string request_id = 3;
+  int32 jobs_queued = 4;
+}
+
+message ScheduleStatusRequest {
+  string request_id = 1;
+}
+
+message ScheduleStatusResponse {
+  string request_id = 1;
+  bool active = 2;
+  int64 last_run = 3;
+  int64 next_run = 4;
+  map<string, string> schedule_info = 5;
+}
+
+enum MessageType {
+  UNSPECIFIED = 0;
+  UPDATE_HOTEL = 1;
+  UPDATE_REVIEW = 2;
+  UPDATE_TRANSLATION = 3;
+  FETCH_MISSING_TRANSLATIONS = 4;
+  FETCH_MISSING_REVIEWS = 5;
+}

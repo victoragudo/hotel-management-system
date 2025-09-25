@@ -1,0 +1,63 @@
+# Version control
+.git
+.gitignore
+
+# IDE and editor files
+.idea
+.vscode
+*.swp
+*.swo
+*~
+
+# Documentation
+*.md
+README*
+docs/
+*.svg
+*.png
+*.jpg
+*.jpeg
+
+# Test files and coverage
+test/
+tests/
+*_test.go
+*.test
+coverage.txt
+coverage.html
+
+# Logs
+*.log
+logs/
+
+# Environment files
+.env
+.env.*
+
+# Build artifacts and binaries
+bin/
+build/
+dist/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Go specific
+vendor/
+
+# Node modules (if any)
+node_modules/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Project specific
+hotel-management-system.iml
+scratches/
