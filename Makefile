@@ -32,7 +32,7 @@ else
 endif
 
 PROTOC_VERSION := 3.21.12
-GO_VERSION := 1.24.5
+GO_VERSION := 1.25.1
 
 help:
 	@echo "Available commands:"
